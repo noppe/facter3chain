@@ -24,7 +24,7 @@ build: ${WORK}
 	(cd ${WORK} && gmake -I${ORIGIN} -f ${ORIGIN}/augeas stageB)
 
 stageB:
-	PKG_CONFIG_PATH=${PREFIX}/lib/pkgconfig ./configure --prefix=${PREFIX} LDFLAGS="-L${PREFIX}/lib -Wl,-rpath=${PREFIX}/lib'
+	PKG_CONFIG_PATH=${PREFIX}/lib/pkgconfig ./configure --prefix=${PREFIX} LDFLAGS="-L${PREFIX}/lib -Wl,-rpath=${PREFIX}/lib"
 	gmake -j 5 CPPFLAGS="-I${PREFIX}/include"
 	gmake install
 

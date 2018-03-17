@@ -9,7 +9,7 @@ WORK = ${FACTORY}/curl-7.57.0
 
 
 ${PKG}:
-	(cd ${DUMP} && test -f ${PKG} || wget ${URL})
+	(cd ${DUMP} && test -f ${PKG} || wget --no-check-certificate ${URL})
 
 ${WORK}: ${PKG}
 	(cd ${FACTORY} && gtar zxvf ${DUMP}/${PKG} )
