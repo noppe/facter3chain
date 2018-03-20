@@ -1,0 +1,31 @@
+include common
+
+all:
+	@echo Nah .. make prep or build instead
+
+PKG = yaml-cpp
+URL = https://github.com/jbeder/yaml-cpp.git
+WORK = ${FACTORY}/${PKG}
+
+
+${PKG}:
+	(cd ${DUMP} && test -d ${PKG} || git clone ${URL})
+
+${WORK}: ${PKG}
+	(cd ${FACTORY} && test -d ${PKG} || git clone ${DUMP}/${PKG} )
+
+prep: ${WORK}
+
+clean:
+	(cd ${FACTORY} && rm -rf ${PKG})
+
+build: ${WORK}
+	(cd ${WORK} && gmake -I${ORIGIN} -f ${ORIGIN}/yaml stageB)
+
+stageB:
+	${ORIGIN}/bin/cmakelist.fix ${PREFIX}
+	mkdir build
+	(cd build && cmake -DCMAKE_INSTALL_PREFIX:PATH=${PREFIX} ..)
+	(cd build && gmake -j 5 && gmake install)
+
+

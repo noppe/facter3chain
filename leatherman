@@ -1,0 +1,31 @@
+include common
+
+all:
+	@echo Nah .. make prep or build instead
+
+PKG = leatherman
+URL = https://github.com/puppetlabs/leatherman
+WORK = ${FACTORY}/${PKG}
+
+
+${PKG}: 
+	(cd ${DUMP} && test -d ${PKG} || git clone ${URL})
+
+${WORK}: ${PKG}
+	(cd ${FACTORY} && test -d ${PKG} || git clone ${DUMP}/${PKG} )
+
+prep: ${WORK}
+
+clean:
+	(cd ${FACTORY} && rm -rf ${PKG})
+
+build: ${WORK}
+	(cd ${WORK} && gmake -I${ORIGIN} -f ${ORIGIN}/leatherman stageB)
+
+stageB:
+	${ORIGIN}/bin/cmakelist.fix ${PREFIX} leatherman
+	mkdir build
+	(cd build && cmake -DCMAKE_INSTALL_PREFIX:PATH=${PREFIX} ..)
+	(cd build && gmake -j 5 && gmake install)
+
+

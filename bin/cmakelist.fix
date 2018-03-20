@@ -1,0 +1,54 @@
+#!/usr/bin/env perl
+
+## args: prefix  cxxalso
+
+$prefix = shift @ARGV ;
+$cxxalso = shift @ARGV ;
+
+$blurb =
+    "\n## CMakeFixer was here\n" .
+    'INCLUDE_DIRECTORIES(${INCLUDE_DIRECTORIES} ${Boost_INCLUDE_DIRS} ' .
+    "${prefix}/include /opt/csw/include)\n" .
+    'LINK_DIRECTORIES(${Boost_LIBRARY_DIRS} ' . 
+    "${prefix}/lib /opt/csw/lib )\n" ;
+$blurb .= 
+    '#Rpath' . "\n" .
+    'set(CMAKE_SKIP_BUILD_RPATH  FALSE)' . "\n" .
+    'set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)' . "\n" .
+    'set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)' . "\n" ;
+
+if ($cxxalso) {
+  $blurb .= 
+      'SET(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-std=c++11 -pthreads")' . "\n" .
+      'SET(Boost_USE_MULTITHREAD ON)' . "\n" ;
+}
+      
+$blurb .= "\n# end of CMakFix\n\n" ;
+
+$fil = "CMakeLists.bup.$$" ;
+open F, "CMakeLists.txt" || die "No CMakeLists.txt ??" ;
+@content = (<F>) ;
+## print "Content: ", join ("\n", @content[0..4]), "....\n" ;
+close F ;
+
+unless (grep /CMakeFixer was here/, @content) {
+
+    open STDOUT, "> CMakeLists.txt" || die "Another kind of wtf ?!?=?" ;
+    open BUP, "> $fil" || die "Cant create backup file ??" ;
+    $blurb_to_go = 1 ;
+    foreach (@content) {
+	# print STDERR $_ ;
+    	if (/^$/ && $blurb_to_go) {
+	    print $blurb ;
+	    $blurb_to_go = 0 ;
+	}
+	print ;
+	print BUP $_ ;
+    }
+    close BUP ;
+}
+close STDIN ;
+close STDOUT ;
+if ($blurb_to_go) {
+    print STDERR "Failed to fix CMakeLists.txt :---( \n" ;
+}

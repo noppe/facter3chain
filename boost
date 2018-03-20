@@ -1,0 +1,29 @@
+include common
+
+ARCH_OPTS:sh = arch i86pc || echo instruction-set=v9
+
+
+all:
+	@echo Nah .. make prep or build instead
+
+PKG = boost_1_66_0.tar.gz
+URL = https://dl.bintray.com/boostorg/release/1.66.0/source/boost_1_66_0.tar.gz
+WORK = ${FACTORY}/boost_1_66_0
+
+${PKG}:
+	(cd ${DUMP} && test -f ${PKG} || wget ${URL})
+
+${WORK}: ${PKG}
+	(cd ${FACTORY} && gtar zxvf ${DUMP}/${PKG} )
+
+prep: ${WORK}
+
+clean:
+	(cd ${FACTORY} && rm -rf boost_1_66_0)
+
+build: ${WORK}
+	(cd ${WORK} && gmake -f ${ORIGIN}/boost stageB)
+
+stageB:
+	${ORIGIN}/bin/boost.fix
+	./b2 install cxxflags="-std=gnu++11" linkflags="-std=gnu++11 -Wl,-rpath=${PREFIX}/lib" --build-type=minimal --prefix=${PREFIX} --with-program_options --with-system --with-filesystem --with-date_time --with-thread --with-regex --with-log --with-locale --with-chrono boost.locale.iconv=off --build-dir=${PREFIX} ${ARCH_OPTS}

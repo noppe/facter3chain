@@ -1,0 +1,4 @@
+PREFIX  = /opt/aiaiao
+DUMP    = /export/home/noppe/dump
+FACTORY = /export/home/noppe/build
+ORIGIN  = /export/home/noppe/w

@@ -1,0 +1,11 @@
+#!/bin/bash
+
+FACTORY=$1
+
+cd $FACTORY
+cd boost_1_66_0 ||  exit 1
+
+(rm bootstrap.sh ; (echo '#!/bin/bash' ; cat -) > bootstrap.sh) < bootstrap.sh
+(rm tools/build/src/engine/build.sh ; (echo '#!/bin/bash' ; cat -) > tools/build/src/engine/build.sh) < tools/build/src/engine/build.sh
+chmod +x bootstrap.sh
+chmod +x tools/build/src/engine/build.sh

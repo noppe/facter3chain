@@ -1,0 +1,7 @@
+
+FOO:sh = arch i86pc && echo pc || echo instruction-set=v9
+
+all:
+	echo ${FOO}
+
+
