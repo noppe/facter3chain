@@ -14,7 +14,7 @@ ${PKG}:
 	(cd ${DUMP} && test -f ${PKG} || wget ${URL})
 
 ${WORK}: ${PKG}
-	(cd ${FACTORY} && gtar zxvf ${DUMP}/${PKG} )
+	(cd ${FACTORY} && test -d boost_1_66_0 || gtar zxvf ${DUMP}/${PKG} )
 
 prep: ${WORK}
 
@@ -22,8 +22,9 @@ clean:
 	(cd ${FACTORY} && rm -rf boost_1_66_0)
 
 build: ${WORK}
-	(cd ${WORK} && gmake -f ${ORIGIN}/boost stageB)
+	(cd ${WORK} && gmake -I${ORIGIN} -f ${ORIGIN}/boost stageB)
 
 stageB:
 	${ORIGIN}/bin/boost.fix
-	./b2 install cxxflags="-std=gnu++11" linkflags="-std=gnu++11 -Wl,-rpath=${PREFIX}/lib" --build-type=minimal --prefix=${PREFIX} --with-program_options --with-system --with-filesystem --with-date_time --with-thread --with-regex --with-log --with-locale --with-chrono boost.locale.iconv=off --build-dir=${PREFIX} ${ARCH_OPTS}
+	./bootstrap.sh --prefix=${PREFIX}
+	./b2 install threading=multi cxxflags="-std=gnu++11" linkflags="-std=gnu++11 -Wl,-rpath=${PREFIX}/lib" --build-type=minimal --prefix=${PREFIX} --with-program_options --with-system --with-filesystem --with-date_time --with-thread --with-regex --with-log --with-locale --with-chrono boost.locale.iconv=off --build-dir=${PREFIX} ${ARCH_OPTS}
