@@ -24,7 +24,7 @@ build: ${WORK}
 
 stageB:
 	${ORIGIN}/bin/cmakelist.fix ${PREFIX} leatherman
-	mkdir build
+	(test -d build || mkdir build)
 	(cd build && cmake -DCMAKE_INSTALL_PREFIX:PATH=${PREFIX} ..)
 	(cd build && gmake -j 5 && gmake install)
 
