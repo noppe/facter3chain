@@ -2,3 +2,5 @@ PREFIX  = /opt/aiaiao
 DUMP    = /export/home/noppe/dump
 FACTORY = /export/home/noppe/build
 ORIGIN  = /export/home/noppe/w
+PATH = ${PREFIX}/bin:/opt/csw/bin:/usr/xpg4/bin:/usr/xpg6/bin:/usr/bin
+
