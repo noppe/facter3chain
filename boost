@@ -1,6 +1,6 @@
 include common
 
-ARCH_OPTS:sh = arch i86pc || echo instruction-set=v9
+ARCH_OPTS = `arch i86pc || echo instruction-set=v9`
 
 
 all:
