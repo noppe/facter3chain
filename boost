@@ -10,10 +10,10 @@ PKG = boost_1_66_0.tar.gz
 URL = https://dl.bintray.com/boostorg/release/1.66.0/source/boost_1_66_0.tar.gz
 WORK = ${FACTORY}/boost_1_66_0
 
-${PKG}:
-	(cd ${DUMP} && test -f ${PKG} || wget ${URL})
+${DUMP}/${PKG}:
+	(cd ${DUMP} && wget ${URL})
 
-${WORK}: ${PKG}
+${WORK}: ${DUMP}/${PKG}
 	(cd ${FACTORY} && test -d boost_1_66_0 || gtar zxvf ${DUMP}/${PKG} )
 
 prep: ${WORK}

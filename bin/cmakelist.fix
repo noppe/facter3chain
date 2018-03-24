@@ -37,9 +37,12 @@ unless (grep /CMakeFixer was here/, @content) {
     open STDOUT, "> CMakeLists.txt" || die "Another kind of wtf ?!?=?" ;
     open BUP, "> $fil" || die "Cant create backup file ??" ;
     $blurb_to_go = 1 ;
+    $seen_project_line = 0 ;
+    
     foreach (@content) {
 	# print STDERR $_ ;
-    	if (/^$/ && $blurb_to_go) {
+	$seen_project_line = 1 if /^\s*project/ ;
+	if (/^$/ && $blurb_to_go && $seen_project_line) {
 	    print $blurb ;
 	    $blurb_to_go = 0 ;
 	}

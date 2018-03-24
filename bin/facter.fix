@@ -1,0 +1,31 @@
+#!/usr/bin/env perl
+
+$filename = "lib/src/cwrapper.cc" ;
+open F, $filename || die "Cannot read $filename\n" ;
+$file = join '', (<F>) ;
+
+$blurb =<<EOB;
+get_default_facts(char **result) {
+    try {
+        // NB: ssh resolver cannot be blocked
+        facter::facts::collection facts {};      // blocklist set
+        // The boolean arg is meant to avoid including ruby facts
+        facts.add_default_facts
+EOB
+chop $blurb ;
+$file =~ s/get_default_facts.*?facts\.add_default_facts/$blurb/s ;
+# print "BLURB:", $blurb, "EOB\n" ;
+open F, "> " . $filename || die "Cant write to $filename\n" ;
+print F $file ;
+close F ;
+
+
+
+## /var/tmp/BUILD/facter-3.9.3/lib/src/cwrapper.cc
+
+#uint8_t get_default_facts(char **result) {
+#    try {
+#        // NB: ssh resolver cannot be blocked
+#        facter::facts::collection facts {};      // blocklist set
+#        // The boolean arg is meant to avoid including ruby facts
+#        facts.add_default_facts

@@ -8,10 +8,10 @@ URL = https://github.com/jbeder/yaml-cpp.git
 WORK = ${FACTORY}/${PKG}
 
 
-${PKG}:
-	(cd ${DUMP} && test -d ${PKG} || git clone ${URL})
+${DUMP}/${PKG}:
+	(cd ${DUMP} && git clone ${URL})
 
-${WORK}: ${PKG}
+${WORK}: ${DUMP}/${PKG}
 	(cd ${FACTORY} && test -d ${PKG} || git clone ${DUMP}/${PKG} )
 
 prep: ${WORK}
@@ -24,7 +24,7 @@ build: ${WORK}
 
 stageB:
 	${ORIGIN}/bin/cmakelist.fix ${PREFIX}
-	mkdir build
+	(test -d build || mkdir build)
 	(cd build && cmake -DCMAKE_INSTALL_PREFIX:PATH=${PREFIX} ..)
 	(cd build && gmake -j 5 && gmake install)
 

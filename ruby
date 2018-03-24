@@ -24,7 +24,9 @@ build: ${WORK}
 	(cd ${WORK} && gmake -I${ORIGIN} -f ${ORIGIN}/ruby stageB)
 
 stageB:
-	./configure --prefix=${PREFIX} 
+	./configure --prefix=${PREFIX} --enable-pthread  --with-openssl  --without-fiddle linkflags="-std=gnu++11 -Wl,-rpath=/opt/csw/lib"
 	gmake -j 5
 	gmake install
 
+dontuse:
+	# ./configure --prefix=${PREFIX} --disable-install-doc
