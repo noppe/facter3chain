@@ -8,10 +8,10 @@ URL = https://github.com/puppetlabs/leatherman
 WORK = ${FACTORY}/${PKG}
 
 
-${PKG}: 
-	(cd ${DUMP} && test -d ${PKG} || git clone ${URL})
+${DUMP}/${PKG}: 
+	(cd ${DUMP} || git clone ${URL})
 
-${WORK}: ${PKG}
+${WORK}: ${DUMP}/${PKG}
 	(cd ${FACTORY} && test -d ${PKG} || git clone ${DUMP}/${PKG} )
 
 prep: ${WORK}
