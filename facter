@@ -26,7 +26,7 @@ stageB:
 	${ORIGIN}/bin/cmakelist.fix ${PREFIX} facter
 	${ORIGIN}/bin/facter.fix
 	(test -d build || mkdir build)
-	(cd build && cmake -DCMAKE_INSTALL_PREFIX:PATH=${PREFIX} ..)
+	(cd build && cmake -DCMAKE_INSTALL_PREFIX:PATH=${PREFIX} -DCMAKE_BUILD_TYPE=Debug ..)
 	(cd build && gmake -j 5 && gmake install)
 
 
