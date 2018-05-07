@@ -1,0 +1,36 @@
+include common
+
+ARCH = `arch i86pc && echo "solaris-x86-gcc"`
+
+all:
+	@echo Nah .. make prep or build instead
+
+PKG = openssl
+URL = git clone git://git.openssl.org/openssl.git
+WORK = ${FACTORY}/openssl
+
+
+${DUMP}/${PKG}:
+	(cd ${DUMP} && git clone git://git.openssl.org/openssl.git)
+
+${WORK}: ${DUMP}/${PKG}
+	(cd ${FACTORY} && cp -r ${DUMP}/${PKG} . )
+
+prep: ${WORK}
+
+clean:
+	(cd ${FACTORY} && rm -rf openssl)
+
+build: ${WORK}
+	(cd ${WORK} && gmake -I${ORIGIN} -f ${ORIGIN}/openssl stageB)
+
+stageB:
+	echo ${ARCH}	
+	./Configure shared --prefix=${PREFIX} --openssldir=${PREFIX}/ssl -Wl,-rpath=${PREFIX}/lib  ${ARCH}
+	gmake -j 5 LDFLAGS='-lrt'
+	gmake install
+
+stageB-sparc:
+	./config --prefix=${PREFIX} --openssldir=${PREFIX}/ssl
+	gmake -j 5 LDFLAGS='-lrt'
+	gmake install

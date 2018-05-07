@@ -1,0 +1,28 @@
+include common
+
+all:
+	@echo Nah .. make prep or build instead
+
+PKG = gdbm-1.14.1.tar.gz
+URL = ftp://ftp.gnu.org/gnu/gdbm/gdbm-1.14.1.tar.gz
+WORK = ${FACTORY}/gdbm-1.14.1
+
+
+${DUMP}/${PKG}:
+	(cd ${DUMP} && wget ${URL})
+
+${WORK}: ${DUMP}/${PKG}
+	(cd ${FACTORY} && gtar zxf ${DUMP}/${PKG} )
+
+prep: ${WORK}
+
+clean:
+	(cd ${FACTORY} && rm -rf gdbm-1.14.1)
+
+build: ${WORK}
+	(cd ${WORK} && gmake -I${ORIGIN} -f ${ORIGIN}/gdbm stageB)
+
+stageB:
+	./configure --prefix=${PREFIX}
+	gmake -j 5
+	gmake install

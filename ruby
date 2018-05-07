@@ -24,9 +24,13 @@ build: ${WORK}
 	(cd ${WORK} && gmake -I${ORIGIN} -f ${ORIGIN}/ruby stageB)
 
 stageB:
-	./configure --prefix=${PREFIX} --enable-pthread  --with-openssl  --without-fiddle linkflags="-std=gnu++11 -Wl,-rpath=/opt/csw/lib"
+	./configure --prefix=${PREFIX} --enable-pthread --enable-shared --disable-install-doc --with-openssl-dir=${PREFIX} --with-readline-dir=${PREFIX} --with-out-ext=gdbm --without-fiddle linkflags="-std=c1x -Wl,-rpath=${PREFIX}/lib"
 	gmake -j 5
 	gmake install
+	cd ext/gdbm && gmake -I${ORIGIN} -f ${ORIGIN}/ruby stageGdbm
 
-dontuse:
-	# ./configure --prefix=${PREFIX} --disable-install-doc
+stageGdbm:
+	${PREFIX}/bin/ruby extconf.rb --with-gdbm-dir=/opt/aiaiao
+	gmake top_srcdir=../.. -j 5
+	gmake top_srcdir=../.. install
+

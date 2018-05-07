@@ -1,0 +1,31 @@
+include common
+
+all:
+	@echo Nah .. make prep or build instead
+
+PKG = augeas-1.10.1.tar.gz
+URL = http://download.augeas.net/augeas-1.10.1.tar.gz
+WORK = ${FACTORY}/augeas-1.10.1
+
+
+${PKG}:
+	(cd ${DUMP} && test -f ${PKG} || wget ${URL})
+
+${WORK}: ${PKG}
+	(cd ${FACTORY} && test -d augeas-1.10.1 || gtar zxvf ${DUMP}/${PKG} )
+
+prep: ${WORK}
+
+clean:
+	(cd ${FACTORY} && rm -rf augeas-1.10.1)
+
+build: ${WORK}
+	echo ${PATH}
+	(cd ${WORK} && gmake -I${ORIGIN} -f ${ORIGIN}/augeas stageB)
+
+stageB:
+	./configure --prefix=${PREFIX}
+	gmake -j 5
+	gmake install
+
+

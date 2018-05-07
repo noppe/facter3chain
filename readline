@@ -1,0 +1,29 @@
+include common
+
+all:
+	@echo Nah .. make prep or build instead
+
+PKG = readline-6.3.tar.gz
+URL = ftp://ftp.gnu.org/gnu/readline/readline-6.3.tar.gz 
+WORK = ${FACTORY}/readline-6.3
+
+
+${DUMP}/${PKG}:
+	(cd ${DUMP} && wget ${URL})
+
+${WORK}: ${DUMP}/${PKG}
+	(cd ${FACTORY} && gtar zxf ${DUMP}/${PKG} )
+
+prep: ${WORK}
+
+clean:
+	(cd ${FACTORY} && rm -rf readline-6.3)
+
+build: ${WORK}
+	(cd ${WORK} && gmake -I${ORIGIN} -f ${ORIGIN}/readline stageB)
+
+stageB:
+	echo hej
+	./configure --prefix=${PREFIX}
+	gmake -j 5
+	gmake install
