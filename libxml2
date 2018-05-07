@@ -1,0 +1,32 @@
+include common
+
+all:
+	@echo Nah .. make prep or build instead
+
+BNAME = libxml2-2.9.8
+PKG = ${BNAME}.tar.gz
+URL = ftp://xmlsoft.org/libxml2/libxml2-2.9.8.tar.gz
+WORK = ${FACTORY}/libxml2-2.9.8
+
+
+${PKG}:
+	(cd ${DUMP} && test -f ${PKG} || wget ${URL})
+
+${WORK}: ${PKG}
+	(cd ${FACTORY} && test -d ${BNAME} || gtar zxvf ${DUMP}/${PKG} )
+
+prep: ${WORK}
+
+clean:
+	(cd ${FACTORY} && rm -rf ${BNAME})
+
+build: ${WORK}
+	echo ${PATH}
+	(cd ${WORK} && gmake -I${ORIGIN} -f ${ORIGIN}/libxml2 stageB)
+
+stageB:
+	./configure --prefix=${PREFIX} --without-python
+	gmake -j 5 CFLAGS='-std=c11 -Wno-pedantic'
+	gmake install
+
+
