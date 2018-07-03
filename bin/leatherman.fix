@@ -1,0 +1,10 @@
+#!/usr/bin/env perl
+
+$filename = "ruby/src/api.cc" ;
+open F, $filename || die "Cannot read $filename\n" ;
+$file = join '', (<F>) ;
+
+$file =~ s!string api::ruby_lib_location = ""!string api::ruby_lib_location = "/opt/aiaiao/lib/libruby.so.2.5.0"! ;
+open F, "> " . $filename || die "Cant write to $filename\n" ;
+print F $file ;
+close F ;

@@ -1,0 +1,27 @@
+include common
+
+all:
+	@echo Nah .. make prep or build instead
+
+PKG = hiera-3.4.3.tar.gz
+URL = https://downloads.puppetlabs.com/hiera/hiera-3.4.3.tar.gz
+WORK = ${FACTORY}/hiera-3.4.3
+
+
+${PKG}:
+	(cd ${DUMP} && test -f ${PKG} || wget ${URL})
+
+${WORK}: ${PKG}
+	(cd ${FACTORY} && test -d hiera-3.4.3 || gtar zxvf ${DUMP}/${PKG} )
+
+prep: ${WORK}
+
+clean:
+	(cd ${FACTORY} && rm -rf hiera-3.4.3)
+
+build: ${WORK}
+	echo ${PATH}
+	(cd ${WORK} && gmake -I${ORIGIN} -f ${ORIGIN}/hiera stageB)
+
+stageB:
+	${PREFIX}/bin/ruby install.rb --no-configs --destdir=${PREFIX}
