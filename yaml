@@ -23,6 +23,7 @@ build: ${WORK}
 	(cd ${WORK} && gmake -I${ORIGIN} -f ${ORIGIN}/yaml stageB)
 
 stageB:
+	git checkout ab5f9259a4e67d3fe0e4832bd407a9e596e2d884
 	${ORIGIN}/bin/cmakelist.fix ${PREFIX}
 	(test -d build || mkdir build)
 	(cd build && cmake -DCMAKE_INSTALL_PREFIX:PATH=${PREFIX} ..)

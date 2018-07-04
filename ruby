@@ -25,6 +25,7 @@ build: ${WORK}
 
 stageB:
 	./configure --prefix=${PREFIX} --enable-pthread --enable-shared --disable-install-doc --with-openssl-dir=${PREFIX} --with-readline-dir=${PREFIX} --with-out-ext=gdbm --without-fiddle linkflags="-std=c1x -Wl,-rpath=${PREFIX}/lib"
+	${ORIGIN}/bin/ruby.fix
 	gmake -j 5
 	@echo 'Doing install twice..for some reason (gdbm?) it does not install on first'
 	gmake install
@@ -32,7 +33,7 @@ stageB:
 	cd ext/gdbm && gmake -I${ORIGIN} -f ${ORIGIN}/ruby stageGdbm
 
 stageGdbm:
-	${PREFIX}/bin/ruby extconf.rb --with-gdbm-dir=/opt/aiaiao
+	${PREFIX}/bin/ruby extconf.rb --with-gdbm-dir=${PREFIX}
 	gmake top_srcdir=../.. -j 5
 	gmake top_srcdir=../.. install
 

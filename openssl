@@ -1,6 +1,6 @@
 include common
 
-ARCH = `arch i86pc && echo "solaris-x86-gcc"`
+ARCH = `if arch i86pc ; then  echo "solaris-x86-gcc" ; else echo solaris-sparcv9-gcc ; fi`
 
 all:
 	@echo Nah .. make prep or build instead

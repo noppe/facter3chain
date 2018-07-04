@@ -1,0 +1,1962 @@
+#!/usr/bin/env perl
+
+$extsmk =<<EOF;
+# -*- makefile -*-
+V = 0
+Q1 = $(V:1=)
+Q = $(Q1:0=@)
+ECHO1 = $(V:1=@:)
+ECHO = $(ECHO1:0=@echo)
+extensions = ext/fcntl/. ext/pty/. ext/io/console/. ext/io/nonblock/. \
+	     ext/io/wait/. ext/date/. ext/openssl/. ext/fiber/. \
+	     ext/coverage/. ext/cgi/escape/. ext/win32ole/. \
+	     ext/rbconfig/sizeof/. ext/-test-/array/resize/. \
+	     ext/-test-/bignum/. ext/-test-/bug-3571/. \
+	     ext/-test-/bug-5832/. ext/-test-/bug_reporter/. \
+	     ext/-test-/class/. ext/-test-/debug/. \
+	     ext/-test-/dln/empty/. ext/-test-/exception/. \
+	     ext/-test-/fatal/. ext/-test-/file/. ext/-test-/float/. \
+	     ext/-test-/funcall/. ext/-test-/gvl/call_without_gvl/. \
+	     ext/-test-/hash/. ext/-test-/integer/. \
+	     ext/-test-/iseq_load/. ext/-test-/iter/. \
+	     ext/-test-/load/dot.dot/. ext/-test-/load/protect/. \
+	     ext/-test-/marshal/compat/. \
+	     ext/-test-/marshal/internal_ivar/. \
+	     ext/-test-/marshal/usr/. ext/-test-/memory_status/. \
+	     ext/-test-/method/. ext/-test-/notimplement/. \
+	     ext/-test-/num2int/. ext/-test-/path_to_class/. \
+	     ext/-test-/popen_deadlock/. ext/-test-/postponed_job/. \
+	     ext/-test-/printf/. ext/-test-/proc/. \
+	     ext/-test-/rational/. ext/-test-/recursion/. \
+	     ext/-test-/regexp/. ext/-test-/scan_args/. \
+	     ext/-test-/st/foreach/. ext/-test-/st/numhash/. \
+	     ext/-test-/st/update/. ext/-test-/string/. \
+	     ext/-test-/struct/. ext/-test-/symbol/. \
+	     ext/-test-/thread_fd_close/. ext/-test-/time/. \
+	     ext/-test-/tracepoint/. ext/-test-/typeddata/. \
+	     ext/-test-/vm/. ext/-test-/wait_for_single_fd/. \
+	     ext/-test-/win32/console/. ext/-test-/win32/dln/. \
+	     ext/-test-/win32/fd_setsize/. ext/strscan/. \
+	     ext/bigdecimal/. ext/stringio/. ext/etc/. ext/pathname/. \
+	     ext/dbm/. ext/syslog/. ext/json/. ext/json/generator/. \
+	     ext/json/parser/. ext/sdbm/. ext/digest/. \
+	     ext/digest/bubblebabble/. ext/digest/md5/. \
+	     ext/digest/rmd160/. ext/digest/sha1/. ext/digest/sha2/. \
+	     ext/nkf/. ext/racc/cparse/. ext/rubyvm/. ext/objspace/. \
+	     ext/psych/. ext/zlib/. ext/ripper/. ext/continuation/. \
+	     ext/socket/. ext/readline/. ext/win32/. \
+	     ext/win32/resolv/.
+EXTOBJS = dmyext.o
+SUBMAKEOPTS = DLDOBJS="$(EXTOBJS) $(EXTENCS)" EXTOBJS= \
+	      EXTSOLIBS="$(EXTLIBS)" LIBRUBY_SO_UPDATE=$(LIBRUBY_EXTS) \
+	      EXTLDFLAGS="$(EXTLDFLAGS)" EXTINITS="$(EXTINITS)" \
+	      UPDATE_LIBRARIES="$(UPDATE_LIBRARIES)" SHOWFLAGS=
+NOTE_MESG = $(RUBY) $(top_srcdir)/tool/colorize.rb skip
+NOTE_NAME = $(RUBY) $(top_srcdir)/tool/colorize.rb fail
+PLATFORM_DIR = 
+RMALL = rm -fr
+RMDIRS = rmdir -p
+RMDIR = rmdir
+RM = rm -f
+
+all:
+static:
+
+clean:
+	-$(Q)$(RM) ext/extinit.o
+distclean:
+	-$(Q)$(RM) ext/extinit.c
+
+all static: ruby
+all: $(extensions:/.=/all)
+all:
+install: $(extensions:/.=/install)
+install:
+static: $(extensions:/.=/static)
+static:
+install-so: $(extensions:/.=/install-so)
+install-so:
+install-rb: $(extensions:/.=/install-rb)
+install-rb:
+clean: $(extensions:/.=/clean)
+distclean: $(extensions:/.=/distclean)
+realclean: $(extensions:/.=/realclean)
+ruby: $(extensions:/.=/all)
+ruby: $(EXTOBJS)
+
+ruby:
+	$(Q)$(MAKE) $(MFLAGS) $(SUBMAKEOPTS) $@
+
+libencs:
+	$(Q)$(MAKE) $(MFLAGS) -f enc.mk V=$(V) $@
+ext/extinit.o:
+	$(Q)$(MAKE) $(MFLAGS) V=$(V) EXTINITS="$(EXTINITS)" $@
+
+ext/fcntl/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/pty/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/io/console/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/io/nonblock/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/io/wait/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/date/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/openssl/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/fiber/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/coverage/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/cgi/escape/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/win32ole/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/rbconfig/sizeof/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/array/resize/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/bignum/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/bug-3571/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/bug-5832/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/bug_reporter/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/class/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/debug/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/dln/empty/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/exception/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/fatal/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/file/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/float/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/funcall/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/gvl/call_without_gvl/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/hash/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/integer/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/iseq_load/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/iter/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/load/dot.dot/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/load/protect/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/marshal/compat/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/marshal/internal_ivar/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/marshal/usr/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/memory_status/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/method/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/notimplement/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/num2int/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/path_to_class/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/popen_deadlock/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/postponed_job/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/printf/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/proc/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/rational/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/recursion/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/regexp/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/scan_args/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/st/foreach/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/st/numhash/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/st/update/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/string/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/struct/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/symbol/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/thread_fd_close/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/time/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/tracepoint/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/typeddata/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/vm/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/wait_for_single_fd/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/win32/console/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/win32/dln/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/win32/fd_setsize/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/strscan/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/bigdecimal/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/stringio/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/etc/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/pathname/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/dbm/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/syslog/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/json/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/json/generator/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/json/parser/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/sdbm/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/digest/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/digest/bubblebabble/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/digest/md5/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/digest/rmd160/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/digest/sha1/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/digest/sha2/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/nkf/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/racc/cparse/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/rubyvm/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/objspace/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/psych/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/zlib/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/ripper/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/continuation/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/socket/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/readline/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/win32/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/win32/resolv/all:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/fcntl/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/pty/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/io/console/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/io/nonblock/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/io/wait/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/date/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/openssl/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/fiber/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/coverage/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/cgi/escape/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/win32ole/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/rbconfig/sizeof/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/array/resize/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/bignum/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/bug-3571/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/bug-5832/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/bug_reporter/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/class/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/debug/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/dln/empty/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/exception/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/fatal/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/file/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/float/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/funcall/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/gvl/call_without_gvl/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/hash/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/integer/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/iseq_load/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/iter/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/load/dot.dot/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/load/protect/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/marshal/compat/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/marshal/internal_ivar/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/marshal/usr/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/memory_status/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/method/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/notimplement/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/num2int/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/path_to_class/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/popen_deadlock/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/postponed_job/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/printf/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/proc/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/rational/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/recursion/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/regexp/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/scan_args/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/st/foreach/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/st/numhash/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/st/update/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/string/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/struct/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/symbol/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/thread_fd_close/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/time/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/tracepoint/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/typeddata/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/vm/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/wait_for_single_fd/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/win32/console/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/win32/dln/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/win32/fd_setsize/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/strscan/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/bigdecimal/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/stringio/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/etc/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/pathname/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/dbm/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/syslog/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/json/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/json/generator/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/json/parser/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/sdbm/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/digest/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/digest/bubblebabble/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/digest/md5/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/digest/rmd160/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/digest/sha1/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/digest/sha2/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/nkf/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/racc/cparse/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/rubyvm/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/objspace/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/psych/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/zlib/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/ripper/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/continuation/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/socket/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/readline/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/win32/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/win32/resolv/static:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/fcntl/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/pty/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/io/console/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/io/nonblock/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/io/wait/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/date/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/openssl/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/fiber/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/coverage/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/cgi/escape/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/win32ole/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/rbconfig/sizeof/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/array/resize/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/bignum/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/bug-3571/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/bug-5832/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/bug_reporter/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/class/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/debug/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/dln/empty/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/exception/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/fatal/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/file/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/float/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/funcall/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/gvl/call_without_gvl/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/hash/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/integer/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/iseq_load/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/iter/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/load/dot.dot/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/load/protect/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/marshal/compat/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/marshal/internal_ivar/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/marshal/usr/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/memory_status/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/method/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/notimplement/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/num2int/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/path_to_class/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/popen_deadlock/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/postponed_job/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/printf/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/proc/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/rational/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/recursion/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/regexp/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/scan_args/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/st/foreach/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/st/numhash/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/st/update/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/string/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/struct/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/symbol/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/thread_fd_close/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/time/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/tracepoint/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/typeddata/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/vm/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/wait_for_single_fd/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/win32/console/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/win32/dln/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/win32/fd_setsize/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/strscan/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/bigdecimal/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/stringio/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/etc/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/pathname/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/dbm/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/syslog/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/json/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/json/generator/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/json/parser/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/sdbm/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/digest/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/digest/bubblebabble/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/digest/md5/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/digest/rmd160/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/digest/sha1/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/digest/sha2/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/nkf/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/racc/cparse/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/rubyvm/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/objspace/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/psych/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/zlib/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/ripper/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/continuation/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/socket/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/readline/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/win32/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/win32/resolv/install:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/fcntl/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/pty/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/io/console/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/io/nonblock/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/io/wait/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/date/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/openssl/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/fiber/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/coverage/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/cgi/escape/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/win32ole/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/rbconfig/sizeof/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/array/resize/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/bignum/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/bug-3571/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/bug-5832/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/bug_reporter/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/class/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/debug/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/dln/empty/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/exception/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/fatal/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/file/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/float/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/funcall/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/gvl/call_without_gvl/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/hash/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/integer/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/iseq_load/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/iter/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/load/dot.dot/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/load/protect/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/marshal/compat/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/marshal/internal_ivar/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/marshal/usr/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/memory_status/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/method/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/notimplement/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/num2int/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/path_to_class/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/popen_deadlock/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/postponed_job/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/printf/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/proc/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/rational/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/recursion/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/regexp/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/scan_args/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/st/foreach/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/st/numhash/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/st/update/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/string/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/struct/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/symbol/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/thread_fd_close/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/time/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/tracepoint/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/typeddata/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/vm/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/wait_for_single_fd/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/win32/console/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/win32/dln/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/win32/fd_setsize/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/strscan/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/bigdecimal/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/stringio/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/etc/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/pathname/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/dbm/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/syslog/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/json/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/json/generator/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/json/parser/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/sdbm/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/digest/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/digest/bubblebabble/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/digest/md5/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/digest/rmd160/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/digest/sha1/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/digest/sha2/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/nkf/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/racc/cparse/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/rubyvm/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/objspace/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/psych/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/zlib/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/ripper/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/continuation/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/socket/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/readline/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/win32/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/win32/resolv/install-so:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/fcntl/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/pty/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/io/console/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/io/nonblock/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/io/wait/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/date/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/openssl/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/fiber/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/coverage/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/cgi/escape/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/win32ole/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/rbconfig/sizeof/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/array/resize/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/bignum/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/bug-3571/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/bug-5832/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/bug_reporter/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/class/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/debug/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/dln/empty/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/exception/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/fatal/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/file/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/float/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/funcall/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/gvl/call_without_gvl/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/hash/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/integer/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/iseq_load/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/iter/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/load/dot.dot/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/load/protect/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/marshal/compat/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/marshal/internal_ivar/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/marshal/usr/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/memory_status/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/method/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/notimplement/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/num2int/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/path_to_class/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/popen_deadlock/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/postponed_job/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/printf/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/proc/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/rational/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/recursion/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/regexp/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/scan_args/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/st/foreach/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/st/numhash/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/st/update/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/string/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/struct/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/symbol/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/thread_fd_close/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/time/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/tracepoint/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/typeddata/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/vm/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/wait_for_single_fd/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/win32/console/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/win32/dln/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/win32/fd_setsize/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/strscan/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/bigdecimal/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/stringio/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/etc/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/pathname/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/dbm/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/syslog/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/json/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/json/generator/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/json/parser/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/sdbm/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/digest/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/digest/bubblebabble/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/digest/md5/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/digest/rmd160/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/digest/sha1/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/digest/sha2/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/nkf/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/racc/cparse/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/rubyvm/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/objspace/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/psych/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/zlib/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/ripper/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/continuation/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/socket/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/readline/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/win32/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/win32/resolv/install-rb:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/fcntl/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/pty/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/io/console/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/io/nonblock/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/io/wait/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/date/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/openssl/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/fiber/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/coverage/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/cgi/escape/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/win32ole/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/rbconfig/sizeof/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/array/resize/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/bignum/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/bug-3571/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/bug-5832/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/bug_reporter/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/class/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/debug/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/dln/empty/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/exception/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/fatal/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/file/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/float/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/funcall/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/gvl/call_without_gvl/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/hash/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/integer/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/iseq_load/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/iter/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/load/dot.dot/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/load/protect/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/marshal/compat/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/marshal/internal_ivar/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/marshal/usr/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/memory_status/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/method/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/notimplement/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/num2int/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/path_to_class/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/popen_deadlock/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/postponed_job/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/printf/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/proc/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/rational/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/recursion/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/regexp/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/scan_args/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/st/foreach/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/st/numhash/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/st/update/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/string/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/struct/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/symbol/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/thread_fd_close/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/time/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/tracepoint/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/typeddata/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/vm/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/wait_for_single_fd/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/win32/console/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/win32/dln/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/-test-/win32/fd_setsize/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/strscan/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/bigdecimal/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/stringio/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/etc/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/pathname/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/dbm/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/syslog/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/json/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/json/generator/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/json/parser/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/sdbm/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/digest/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/digest/bubblebabble/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/digest/md5/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/digest/rmd160/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/digest/sha1/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/digest/sha2/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/nkf/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/racc/cparse/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/rubyvm/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/objspace/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/psych/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/zlib/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/ripper/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/continuation/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/socket/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/readline/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/win32/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/win32/resolv/clean:
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+ext/fcntl/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/pty/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/io/console/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/io/nonblock/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/io/wait/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/date/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/openssl/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/fiber/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/coverage/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/cgi/escape/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/win32ole/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/rbconfig/sizeof/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/array/resize/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/bignum/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/bug-3571/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/bug-5832/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/bug_reporter/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/class/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/debug/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/dln/empty/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/exception/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/fatal/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/file/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/float/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/funcall/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/gvl/call_without_gvl/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/hash/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/integer/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/iseq_load/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/iter/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/load/dot.dot/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/load/protect/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/marshal/compat/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/marshal/internal_ivar/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/marshal/usr/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/memory_status/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/method/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/notimplement/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/num2int/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/path_to_class/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/popen_deadlock/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/postponed_job/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/printf/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/proc/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/rational/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/recursion/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/regexp/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/scan_args/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/st/foreach/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/st/numhash/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/st/update/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/string/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/struct/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/symbol/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/thread_fd_close/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/time/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/tracepoint/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/typeddata/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/vm/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/wait_for_single_fd/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/win32/console/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/win32/dln/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/win32/fd_setsize/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/strscan/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/bigdecimal/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/stringio/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/etc/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/pathname/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/dbm/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/syslog/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/json/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/json/generator/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/json/parser/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/sdbm/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/digest/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/digest/bubblebabble/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/digest/md5/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/digest/rmd160/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/digest/sha1/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/digest/sha2/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/nkf/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/racc/cparse/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/rubyvm/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/objspace/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/psych/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/zlib/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/ripper/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/continuation/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/socket/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/readline/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/win32/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/win32/resolv/distclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/fcntl/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/pty/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/io/console/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/io/nonblock/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/io/wait/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/date/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/openssl/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/fiber/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/coverage/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/cgi/escape/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/win32ole/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/rbconfig/sizeof/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/array/resize/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/bignum/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/bug-3571/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/bug-5832/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/bug_reporter/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/class/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/debug/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/dln/empty/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/exception/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/fatal/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/file/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/float/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/funcall/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/gvl/call_without_gvl/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/hash/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/integer/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/iseq_load/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/iter/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/load/dot.dot/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/load/protect/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/marshal/compat/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/marshal/internal_ivar/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/marshal/usr/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/memory_status/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/method/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/notimplement/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/num2int/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/path_to_class/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/popen_deadlock/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/postponed_job/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/printf/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/proc/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/rational/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/recursion/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/regexp/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/scan_args/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/st/foreach/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/st/numhash/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/st/update/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/string/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/struct/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/symbol/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/thread_fd_close/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/time/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/tracepoint/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/typeddata/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/vm/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/wait_for_single_fd/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/win32/console/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/win32/dln/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/-test-/win32/fd_setsize/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/strscan/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/bigdecimal/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/stringio/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/etc/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/pathname/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/dbm/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/syslog/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/json/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/json/generator/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/json/parser/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/sdbm/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/digest/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/digest/bubblebabble/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/digest/md5/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/digest/rmd160/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/digest/sha1/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/digest/sha2/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/nkf/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/racc/cparse/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/rubyvm/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/objspace/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/psych/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/zlib/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/ripper/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/continuation/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/socket/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/readline/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/win32/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+ext/win32/resolv/realclean:
+	$(ECHO) $(@F)ing $(@D)
+	$(Q)cd $(@D) && exec $(MAKE) $(MFLAGS) V=$(V) $(@F)
+	$(Q)$(RMDIRS) $(@D)
+
+extso:
+	@echo EXTSO=$(EXTSO)
+
+note: note-body
+	@$(NOTE_MESG) "*** Fix the problems, then remove these directories and try again if you want."
+
+note-body:: note-header
+	@$(NOTE_NAME) "win32ole:"
+	@echo "	Could not be configured. It will not be installed."
+	@echo "	Check ext/win32ole/mkmf.log for more details."
+	@$(NOTE_NAME) "ripper:"
+	@echo "	Could not be configured. It will not be installed."
+	@echo "	Check ext/ripper/mkmf.log for more details."
+	@$(NOTE_NAME) "win32:"
+	@echo "	Could not be configured. It will not be installed."
+	@echo "	Check ext/win32/mkmf.log for more details."
+	@$(NOTE_NAME) "win32/resolv:"
+	@echo "	Skipped because its parent was not configured."
+
+note-header:
+	@$(NOTE_MESG) "*** Following extensions are not compiled:"
+EOF
+
+open F, "> exts.mk" or die "Can not fix exts.mk" ;
+print F $extsmk ;
+close F ;
+

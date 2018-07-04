@@ -8,11 +8,23 @@ build-boost:
 test-boost:
 	(cd tests/boost && gmake)
 
+build-ssl:
+	gmake -f openssl build
+
 build-curl:
 	gmake -f curl build
 
 test-curl:
 	(cd tests/curl && gmake)
+
+build-gdbm:
+	gmake -f gdbm build
+
+build-readline:
+	gmake -f readline build
+
+build-libxml2:
+	gmake -f libxml2 build
 
 build-yaml:
 	gmake -f yaml build

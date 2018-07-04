@@ -1,6 +1,6 @@
 PREFIX  = /opt/aiaiao
-DUMP    = /export/home/noppe/dump
-FACTORY = /export/home/noppe/build
-ORIGIN  = /export/home/noppe/w
+DUMP    = /export/home/noppe/p5/dump
+FACTORY = /export/home/noppe/p5/build
+ORIGIN  = /export/home/noppe/p5/facter3chain
 PATH = ${PREFIX}/bin:/opt/csw/bin:/usr/xpg4/bin:/usr/xpg6/bin:/usr/bin
 
