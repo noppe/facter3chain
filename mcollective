@@ -1,0 +1,28 @@
+include common
+
+all:
+	@echo Nah .. make prep or build instead
+
+PKG = mcollective-2.12.2.tar.gz
+URL = https://downloads.puppetlabs.com/mcollective/mcollective-2.12.2.tar.gz
+WORK = ${FACTORY}/mcollective-2.12.2
+
+
+${PKG}:
+	(cd ${DUMP} && test -f ${PKG} || wget ${URL})
+
+${WORK}: ${PKG}
+	(cd ${FACTORY} && test -d mcollective-2.12.2 || gtar zxvf ${DUMP}/${PKG} )
+
+prep: ${WORK}
+
+clean:
+	(cd ${FACTORY} && rm -rf mcollective-2.12.2)
+
+build: ${WORK}
+	echo ${PATH}
+	(cd ${WORK} && gmake -I${ORIGIN} -f ${ORIGIN}/mcollective stageB)
+
+stageB:
+	${PREFIX}/bin/gem install stomp
+	${PREFIX}/bin/ruby install.rb --no-rdoc --no-configs  --plugindir=${PREFIX}/libexec
