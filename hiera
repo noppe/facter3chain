@@ -24,4 +24,5 @@ build: ${WORK}
 	(cd ${WORK} && gmake -I${ORIGIN} -f ${ORIGIN}/hiera stageB)
 
 stageB:
-	${PREFIX}/bin/ruby install.rb --no-configs --destdir=${PREFIX}
+	${PREFIX}/bin/ruby install.rb --no-configs 
+	# --destdir=${PREFIX}
