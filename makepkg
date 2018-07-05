@@ -1,0 +1,20 @@
+include common
+
+ARCH = `if arch i86pc ; then  echo "i386" ; else echo "sparc" ; fi`
+
+PKGFILE=${PKG}-${ARCH}.pkg
+PKG=AIOpuppet
+
+
+info: 
+	grep ARCH pkginfo || echo ARCH=\"${ARCH}\" >> pkginfo
+ 
+pkg:
+	pkgmk -o -r / -d /tmp -a ${ARCH}
+	touch ${PKGFILE}
+	pkgtrans -s /tmp ${PKGFILE} ${PKG}
+	rm -rf /tmp/${PKG}
+
+proto:
+	(echo "i pkginfo" ; pkgproto ${PREFIX}) > prototype
+
