@@ -1,0 +1,18 @@
+#!/bin/sh
+#
+# $Id: CSWpuppet.preinstall 6316 2009-09-16 10:56:09Z wahwah $
+#
+
+PKG_INSTALL_ROOT=${PKG_INSTALL_ROOT:-/}
+
+test -d /var/aiaiao || mkdir /var/aiaiao
+
+$PKG_INSTALL_ROOT/usr/sbin/chroot $PKG_INSTALL_ROOT/ /usr/bin/getent group puppet \
+    > /dev/null \
+    || /usr/sbin/chroot $PKG_INSTALL_ROOT /usr/sbin/groupadd puppet
+$PKG_INSTALL_ROOT/usr/sbin/chroot $PKG_INSTALL_ROOT/ /usr/bin/getent passwd puppet \
+    > /dev/null \
+    || /usr/sbin/chroot $PKG_INSTALL_ROOT /usr/sbin/useradd -g puppet -c "Puppet
+" -d /var/aiaiao/puppet -m -s "/bin/true" puppet
+
+

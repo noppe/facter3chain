@@ -1,0 +1,4 @@
+#!/bin/sh
+#
+
+svccfg import /opt/aiaiao/var/svc/manifest/network/puppetd.xml

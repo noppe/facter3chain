@@ -1,0 +1,13 @@
+i pkginfo
+i preinstall
+i postinstall
+d none /opt 0755 root root
+d none /opt/aiaiao 0755 root root
+d none /opt/aiaiao/etc 0755 root other
+d none /opt/aiaiao/etc/init.d 0755 root other
+f none /opt/aiaiao/etc/init.d/puppet=puppet 0755 root other
+d none /opt/aiaiao/var 0755 root other
+d none /opt/aiaiao/var/svc 0755 root other
+d none /opt/aiaiao/var/svc/manifest 0755 root other
+d none /opt/aiaiao/var/svc/manifest/network 0755 root other
+f none /opt/aiaiao/var/svc/manifest/network/puppetd.xml=puppetd.xml 0555 root other

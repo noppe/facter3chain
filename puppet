@@ -24,4 +24,4 @@ build: ${WORK}
 	(cd ${WORK} && gmake -I${ORIGIN} -f ${ORIGIN}/puppet stageB)
 
 stageB:
-	${PREFIX}/bin/ruby install.rb  --configdir=${PREFIX}/etc/puppet --no-rdoc --no-ri --codedir=${PREFIX}/etc/puppet/code --localedir=${PREFIX}/puppet/share/locale --mandir=${PREFIX}/man --vardir=${PREFIX}/puppet/cache --rundir=${PREFIX}/run --logdir=${PREFIX}/log
+	${PREFIX}/bin/ruby install.rb  --configdir=/etc/puppetlabs/puppet --no-rdoc --no-ri --codedir=/etc/puppetlabs/puppet/code --localedir=${PREFIX}/puppet/share/locale --mandir=${PREFIX}/man --vardir=/var/aiaiao/puppet/cache --rundir=/var/aiaiao/puppet/run --logdir=/var/aiaiao/puppet/log
