@@ -5,10 +5,10 @@
 <!-- Updates for OpenCSW by Mark Phillips - opencsw.org -->
 <!-- Changed to AIO by noppe - liu.se -->
 
-<service_bundle type='manifest' name='mcollectived'>
+<service_bundle type='manifest' name='mcollective'>
 
   <service
-    name='network/mcollectived'
+    name='network/mcollective'
     type='service'
     version='1'>
 
