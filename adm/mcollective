@@ -1,25 +1,10 @@
 #!/bin/sh
 #
-# /opt/aiaiao/etc/init.d/puppet
+# /opt/aiaiao/etc/init.d/mcollective
 #
 #   2018-07-07 noppe
 #     * Changed to AIO package with fixes
 #
-#   2011-05-06 Mark Phillips
-#     * Check if we're on Solaris 10 before including the smf_include stuff
-#
-#   2011-03-06 Mark Phillips
-#     * Added getprop - not used, yet
-#
-#   2009-10-21 Maciej Blizinski
-#
-#     * Introduced start/stop/reload as functions
-#     * Distinguishing between reload and restart
-#     * Made the script zone-friendly
-#     * Supported custom pid file locations.
-#
-#   2009-11-23 Gary Law
-#     * changed sbindir
 
 # Check if we're on 10; therefore SMF
 if [ -x /usr/sbin/svcadm ]; then
@@ -31,38 +16,36 @@ exec_prefix="/opt/aiaiao"
 sysconfdir="/etc/opt/csw"
 bindir="/opt/aiaiao/bin"
 sbindir="/opt/aiaiao/sbin"
-localstatedir="/var/aiaiao/puppet/state"
+localstatedir="/var/opt/csw"
+pidfile=/var/aiaiao/puppet/mcollective.pid
+mcollectived=/opt/aiaiao/sbin/mcollectived
 
 getprop() {
     val=`/usr/bin/svcprop -p $1 $SMF_FMRI`
     [ -n "$val" ] && echo $val
 }
 
-start_puppetd() {
+start_mcollective() {
     cd /
     #confdir=`getprop puppet/confdir`
     #vardir=`getprop puppet/vardir`
     #ssldir=`getprop puppet/ssldir`
     
     # Start daemons.
-    ${bindir}/puppet agent > /dev/null 2>&1 &
+    ${mcollectived} --pid=${pidfile} --config="/etc/puppetlabs/mcollective/server.cfg" --daemonize
 }
 
-reload_puppetd() {
+reload_mcollective() {
     if [ -r $pidfile ]; then
         kill -HUP `cat $pidfile`
     fi
 }
 
-stop_puppetd() {
+stop_mcollective() {
     if [ -r $pidfile ]; then
         pid=`cat $pidfile`
         kill $pid
     fi
-    # And below, just cuz not all puppet liked to be reaped
-    # sleep 3
-    # orphans=`ps -fe | grep puppet | grep -v stop`
-    # kill $orphans
 }
 
 get_current_pid() {
@@ -72,7 +55,7 @@ get_current_pid() {
     else
         zoneopts=""
     fi
-    pgrep -f $zoneopts 'puppet agent'
+    pgrep -f $zoneopts 'mcollectived'
 }
 
 # Returns a line with certain string from a config file.
@@ -85,32 +68,31 @@ get_line_with() {
         | grep "${__s}"
 }
 
-pidfile=`$prefix/bin/puppet agent --configprint pidfile`
 
 case "$1" in
     start)
-        printf "Starting Puppet client services:"
-        start_puppetd
-        printf " puppetd"
+        printf "Starting mcollective client services:"
+        start_mcollective
+        printf " mcollective"
         echo ""
         ;;
     stop)
-        printf "Stopping Puppet client services:"
-        stop_puppetd
-        printf " puppetd"
+        printf "Stopping mcollective client services:"
+        stop_mcollective
+        printf " mcollective"
         echo ""
         ;;
     restart)
-        printf "Restarting Puppet client services:"
-        stop_puppetd
-        start_puppetd
-        printf " puppetd"
+        printf "Restarting mcollective client services:"
+        stop_mcollective
+        start_mcollective
+        printf " mcollective"
         echo ""
         ;;
     reload)
-        printf "Reloading Puppet client services:"
-        reload_puppetd
-        printf " puppetd"
+        printf "Reloading mcollective client services:"
+        reload_mcollective
+        printf " mcollective"
         echo ""
         ;;
     status)

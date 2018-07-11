@@ -5,10 +5,10 @@
 <!-- Updates for OpenCSW by Mark Phillips - opencsw.org -->
 <!-- Changed to AIO by noppe - liu.se -->
 
-<service_bundle type='manifest' name='puppet'>
+<service_bundle type='manifest' name='mcollectived'>
 
   <service
-    name='network/puppet'
+    name='network/mcollectived'
     type='service'
     version='1'>
 
@@ -19,7 +19,7 @@
       grouping='require_all'
       restart_on='none'
       type='path'>
-      <service_fmri value='file:///etc/puppetlabs/puppet/puppet.conf'/>
+      <service_fmri value='file:///etc/puppetlabs/mcollective/mcollective.conf'/>
     </dependency>
 
     <dependency name='loopback'
@@ -47,25 +47,25 @@
     <exec_method
       type='method'
       name='start'
-      exec='/opt/aiaiao/etc/init.d/puppet start'
+      exec='/opt/aiaiao/etc/init.d/mcollective start'
       timeout_seconds='60' />
 
     <exec_method
       type='method'
       name='stop'
-      exec='/opt/aiaiao/etc/init.d/puppet stop'
+      exec='/opt/aiaiao/etc/init.d/mcollective stop'
       timeout_seconds='60' />
 
     <stability value='Unstable' />
 
     <template>
       <common_name>
-        <loctext xml:lang='C'>Puppet Client Daemon</loctext>
+        <loctext xml:lang='C'>Mcollective Client Daemon</loctext>
       </common_name>
       <documentation>
-        <manpage title='puppetd' section='1' />
+        <manpage title='mcollective' section='1' />
         <doc_link name='puppetlabs.com'
-          uri='http://puppetlabs.com/puppet/introduction' />
+          uri='http://puppetlabs.com/mcollective/introduction' />
       </documentation>
     </template>
   </service>

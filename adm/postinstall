@@ -2,3 +2,4 @@
 #
 
 svccfg import /opt/aiaiao/var/svc/manifest/network/puppetd.xml
+svccfg import /opt/aiaiao/var/svc/manifest/network/mcollectived.xml
