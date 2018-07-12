@@ -6,6 +6,9 @@
 PKG_INSTALL_ROOT=${PKG_INSTALL_ROOT:-/}
 
 test -d /var/aiaiao || mkdir /var/aiaiao
+test -d /etc/puppetlabs/puppet || mkdir -p /etc/puppetlabs/puppet
+test -d /etc/puppetlabs/mcollective || mkdir -p /etc/puppetlabs/mcollective
+test -d /opt/puppetlabs/mcollective || mkdir -p /opt/puppetlabs/mcollective
 
 $PKG_INSTALL_ROOT/usr/sbin/chroot $PKG_INSTALL_ROOT/ /usr/bin/getent group puppet \
     > /dev/null \
